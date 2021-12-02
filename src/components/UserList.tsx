@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddUser from "../actions/AddUser";
 import axios from "axios";
 import { user } from "../interfaces/InterfaceUser";
 import SearchUser from "../actions/SearchUser";
 import Pagination from "./Pagination";
 import { format } from "date-fns";
-import { useNavigate, Route, BrowserRouter, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [users, setUser] = useState<user[]>([
