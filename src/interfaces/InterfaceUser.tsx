@@ -1,7 +1,8 @@
-export interface user {
-  id: number;
-  Name: string;
-  BoD: Date;
-  Gender: string | boolean;
-  Address: string;
+export interface User {
+  id: string;
+  playerName: string;
+  dateOfBirth: Date;
+  position: string;
+  nativeCountry: string;
+  overall: number;
 }

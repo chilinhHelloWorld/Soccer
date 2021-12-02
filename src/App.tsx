@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
-import UserList from "./components/UserList";
+import PlayerList from "./components/PlayerList";
 function App() {
   return (
     <div>
-      <UserList></UserList>
+      <PlayerList></PlayerList>
     </div>
   );
 }

@@ -1,20 +1,21 @@
-import { useState } from "react";
-import AddUser from "../actions/AddUser";
 import axios from "axios";
-import { user } from "../interfaces/InterfaceUser";
-import SearchUser from "../actions/SearchUser";
-import Pagination from "./Pagination";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddUser from "../actions/AddUser";
+import SearchUser from "../actions/SearchUser";
+import { User } from "../interfaces/InterfaceUser";
+import Pagination from "./Pagination";
 
 const UserList = () => {
-  const [users, setUser] = useState<user[]>([
+  const [users, setUser] = useState<User[]>([
     {
-      id: 1,
-      Name: "Linh",
-      BoD: new Date(),
-      Gender: true,
-      Address: "Soc Trang",
+      id: "1",
+      playerName: "Linh",
+      dateOfBirth: new Date(),
+      position: "Soc Trang",
+      nativeCountry: "AAA",
+      overall: 99,
     },
   ]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,29 +23,32 @@ const UserList = () => {
   const [editUser, seteditUser] = useState([]);
   const [showForm, setShowForm] = useState(false);
   let navigate = useNavigate();
+
   function handleClick() {
-    navigate("/UserDetail");
+    navigate("/detail");
   }
-  // useEffect(() => {
-  //     axios({
-  //         headers: {
-  //             "x-access-token": "" + localStorage.getItem('accessToken')
-  //         },
-  //         method: 'GET',
-  //         url: 'http://localhost:5000/users'
-  //     }).then(res => {
-  //         setUser(res.data.result)
-  //     }).catch(err => {
-  //         console.log(err)
-  //     })
-  // }, [])
+
+  useEffect(() => {
+    fetchPlayers();
+  }, []);
+
+  const fetchPlayers = async () => {
+    const { data } = await axios({
+      method: "GET",
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
+    });
+    console.log(data);
+
+    setUser(data);
+  };
+
   const indexOfLast = currentPage * itemPage;
   const indexOfFirst = indexOfLast - itemPage;
   const currentPost = users.slice(indexOfFirst, indexOfLast);
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const onDelete = (id: number) => {
+  const onDelete = (id: string) => {
     axios({
       headers: {
         "x-access-token": "" + localStorage.getItem("accessToken"),
@@ -86,48 +90,6 @@ const UserList = () => {
     });
   };
 
-  const showUser = () => {
-    var result = null;
-    if (currentPost.length > 0) {
-      result = currentPost.map((user, index) => {
-        var statusGender = user.Gender ? "Male" : "Female";
-        var statusClass = user.Gender ? "warning" : "default";
-        return (
-          <tr onClick={handleClick} style={{ cursor: "pointer" }}>
-            <td>{index + 1}</td>
-            <td>{user.Name}</td>
-            <td>{format(user.BoD, "dd-MM-yyyy")}</td>
-            <td>
-              <span className={`label label-${statusClass}`}>
-                {statusGender}
-              </span>
-            </td>
-            <td>{user.Address}</td>
-            <td>
-              {/* <button
-                                type="button"
-                                className="btn btn-primary btnUpdate"
-
-                                onClick={() => onUpdate(user.id)}
-                            >Update</button> */}
-              <button
-                type="button"
-                className="btn btn-danger btnUpdate"
-                onClick={() => onDelete(user.id)}
-              >
-                Delete
-              </button>
-              {/* <button
-                                onClick={() => onDelete(user.id)}
-                                className="btn btn-success btnUpdate"
-                            >Detail</button> */}
-            </td>
-          </tr>
-        );
-      });
-    }
-    return result;
-  };
   const onSearch = (keyword: string) => {
     console.log(keyword);
     axios({
@@ -165,6 +127,7 @@ const UserList = () => {
   const onShowForm = () => {
     setShowForm(true);
   };
+
   return (
     <div className="container">
       <div>
@@ -192,7 +155,26 @@ const UserList = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>{showUser()}</tbody>
+            <tbody>
+              {users.map((user, index) => (
+                <tr onClick={handleClick} style={{ cursor: "pointer" }}>
+                  <td>{index + 1}</td>
+                  <td>{user.playerName}</td>
+                  <td>{format(new Date(user.dateOfBirth), "dd-MM-yyyy")}</td>
+
+                  <td>{user.nativeCountry}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-danger btnUpdate"
+                      onClick={() => onDelete(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
           <Pagination
             itemPage={itemPage}
