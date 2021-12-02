@@ -1,17 +1,18 @@
-import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AddUser from "../actions/AddUser";
-import SearchUser from "../actions/SearchUser";
+import axios from "axios";
 import { user } from "../interfaces/InterfaceUser";
+import SearchUser from "../actions/SearchUser";
 import Pagination from "./Pagination";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [users, setUser] = useState<user[]>([
     {
       id: 1,
       Name: "Linh",
-      BoD: "21/01/1999",
+      BoD: new Date(),
       Gender: true,
       Address: "Soc Trang",
     },
@@ -21,11 +22,22 @@ const UserList = () => {
   const [editUser, seteditUser] = useState([]);
   const [showForm, setShowForm] = useState(false);
   let navigate = useNavigate();
-
   function handleClick() {
-    navigate("/detail");
+    navigate("/UserDetail");
   }
-
+  // useEffect(() => {
+  //     axios({
+  //         headers: {
+  //             "x-access-token": "" + localStorage.getItem('accessToken')
+  //         },
+  //         method: 'GET',
+  //         url: 'http://localhost:5000/users'
+  //     }).then(res => {
+  //         setUser(res.data.result)
+  //     }).catch(err => {
+  //         console.log(err)
+  //     })
+  // }, [])
   const indexOfLast = currentPage * itemPage;
   const indexOfFirst = indexOfLast - itemPage;
   const currentPost = users.slice(indexOfFirst, indexOfLast);
@@ -84,7 +96,7 @@ const UserList = () => {
           <tr onClick={handleClick} style={{ cursor: "pointer" }}>
             <td>{index + 1}</td>
             <td>{user.Name}</td>
-            <td>{user.BoD}</td>
+            <td>{format(user.BoD, "dd-MM-yyyy")}</td>
             <td>
               <span className={`label label-${statusClass}`}>
                 {statusGender}
@@ -92,6 +104,12 @@ const UserList = () => {
             </td>
             <td>{user.Address}</td>
             <td>
+              {/* <button
+                                type="button"
+                                className="btn btn-primary btnUpdate"
+
+                                onClick={() => onUpdate(user.id)}
+                            >Update</button> */}
               <button
                 type="button"
                 className="btn btn-danger btnUpdate"
@@ -99,6 +117,10 @@ const UserList = () => {
               >
                 Delete
               </button>
+              {/* <button
+                                onClick={() => onDelete(user.id)}
+                                className="btn btn-success btnUpdate"
+                            >Detail</button> */}
             </td>
           </tr>
         );
