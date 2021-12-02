@@ -1,10 +1,10 @@
-import { user as Adduser } from "../interfaces/InterfaceUser";
-import { useEffect, useState } from "react";
-import Select from "react-select";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
+import { User as Adduser } from "../interfaces/InterfaceUser";
+
 interface IProps {
   user: Adduser[];
   setUser: React.Dispatch<React.SetStateAction<Adduser[]>>;
@@ -25,6 +25,7 @@ const AddUser = ({
   const [txtAddress, settxtAddress] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [positionState, SetPositionState] = useState(new Date());
+
   const positions = [
     { value: "GK", label: "Goalkeeper" },
     { value: "SW", label: "Sweeper" },
@@ -39,10 +40,11 @@ const AddUser = ({
   useEffect(() => {
     console.log(txtDoB);
     if (userEdit[0]) {
-      settxtName(userEdit[0].Name);
-      settxtDob(userEdit[0].BoD);
-      setcbGen(userEdit[0].Gender);
-      settxtAddress(userEdit[0].Address);
+      // settxtName(userEdit[0].playerName);
+      // settxtDob(userEdit[0].dateOfBirth);
+      // setcbGen(userEdit[0].nativeCountry);
+      // settxtAddress(userEdit[0].overall);
+      // settxtAddress(userEdit[0].overall);
     } else {
       console.log("Fail get information user");
     }
