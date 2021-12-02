@@ -2,27 +2,27 @@
   padding-top: 10px;
 }
 .btnUpdate {
-  margin-left:20px
+  margin-left: 20px;
 }
 .btnLogout {
-  width:100px;
-  margin-left:1200px;
-  margin-top:10px;
+  width: 100px;
+  margin-left: 1200px;
+  margin-top: 10px;
 }
 .btnAdd {
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 .titleForm {
-  padding-left: 210px;  
-  font-size:30px
+  padding-left: 210px;
+  font-size: 30px;
 }
 .inputForm {
-  width:500px;
+  width: 500px;
   height: 30px;
-  margin-left:40px;
+  margin-left: 40px;
 }
 .titile1 {
-  margin-left:40px;
+  margin-left: 40px;
 }
 .searchI {
   width: 400px;
@@ -30,11 +30,11 @@
 }
 
 body {
-  padding-bottom: 40px;  
+  padding-bottom: 40px;
 }
 .containerform {
-  width:400px;
-  height:400px;
+  width: 400px;
+  height: 400px;
 }
 
 .my-form-save {
@@ -44,30 +44,3 @@ body {
   transform: translate(-50%);
   top: 7%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
