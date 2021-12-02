@@ -6,7 +6,7 @@ const Menus = () => {
         <b className="navbar-brand">TS-React</b>
         <ul className="nav navbar-nav">
           <li className="active">
-            <Link to="/players">Players</Link>
+            <Link to="/">Players</Link>
           </li>
           <li className="active">
             <Link to="/home">Home</Link>
