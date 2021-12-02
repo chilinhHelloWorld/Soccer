@@ -14,7 +14,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/detail" element={<DetailPlayer />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/players" element={<App />} />
+        <Route path="/" element={<App />} />
       </Routes>
     </Router>
   </React.StrictMode>,

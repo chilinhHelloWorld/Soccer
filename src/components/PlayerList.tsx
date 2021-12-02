@@ -15,7 +15,6 @@ const UserList = () => {
       dateOfBirth: new Date(),
       position: "Soc Trang",
       nativeCountry: "AAA",
-      overall: 99,
     },
   ]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +36,6 @@ const UserList = () => {
       method: "GET",
       url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
     });
-    console.log(data);
 
     setUser(data);
   };

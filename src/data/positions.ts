@@ -1,0 +1,18 @@
+export const positions = [
+  { value: "SW", label: "Sweeper" },
+  { value: "CB", label: "Centre Back" },
+  { value: "LB", label: "Left Back" },
+  { value: "RB", label: "Right Back" },
+  { value: "LWB", label: "Left Wing Back" },
+  { value: "RWB", label: "Right Wing Back" },
+  { value: "DM", label: "Defensive Midfielder" },
+  { value: "CM", label: "Centre Midfielder" },
+  { value: "LM", label: "Left Midfielder" },
+  { value: "RM", label: "Right Midfielder" },
+  { value: "AM", label: "Attacking Midfielder" },
+  { value: "LWF", label: "Left Wing Forward" },
+  { value: "RWF", label: "Right Wing Forward" },
+  { value: "CF", label: "Centre Forward" },
+  { value: "ZWE", label: "Zimbabwe" },
+  { value: "ALA", label: "Åland Islands" },
+];
