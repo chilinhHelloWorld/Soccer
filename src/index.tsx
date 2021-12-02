@@ -2,17 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import App from "./App";
-import DetailUser from "./components/DetailUser";
+import DetailPlayer from "./components/DetailUser";
 import Home from "./components/Home";
+import Menus from "./components/Menus";
 import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
+      <Menus></Menus>
       <Routes>
-        <Route path="/UserDetail" element={<DetailUser></DetailUser>} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/" element={<App />} />
+        <Route path="/detail" element={<DetailPlayer />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/players" element={<App />} />
       </Routes>
     </Router>
   </React.StrictMode>,
