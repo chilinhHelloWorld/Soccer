@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Login from './components/Login';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { useNavigate, Route, BrowserRouter, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import DetailUser from './components/DetailUser';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/UserDetail" element={<DetailUser></DetailUser>} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/" element={<App />} />
+
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
