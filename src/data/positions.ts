@@ -13,6 +13,4 @@ export const positions = [
   { value: "LWF", label: "Left Wing Forward" },
   { value: "RWF", label: "Right Wing Forward" },
   { value: "CF", label: "Centre Forward" },
-  { value: "ZWE", label: "Zimbabwe" },
-  { value: "ALA", label: "Åland Islands" },
 ];

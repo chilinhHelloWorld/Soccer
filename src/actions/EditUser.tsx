@@ -6,24 +6,40 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Select from "react-select";
 import { countries } from "../data/countries";
 import { positions } from "../data/positions";
+import { countriesSearch } from "../data/countriesSearch";
+import { positionsSearch } from "../data/positionsSearch";
 import {
   NativeCountry,
   Position,
-  User as Adduser,
+  User as EditUser,
   User,
 } from "../interfaces/InterfaceUser";
 
 interface IProps {
-  user: Adduser[];
-  setUser?: React.Dispatch<React.SetStateAction<Adduser[]>>;
-  userEdit?: Adduser[];
+  user: EditUser[];
+  setUser: React.Dispatch<React.SetStateAction<EditUser[]>>;
+  userEdit: EditUser;
   onCloseForm: () => void;
   seteditUser: React.Dispatch<React.SetStateAction<never[]>>;
 }
-const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
-  const { register, handleSubmit, reset, control } = useForm<User>();
-
-  const [startDate, setStartDate] = useState(new Date());
+const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
+  console.log(userEdit);
+  const { register, handleSubmit, reset, control } = useForm<User>({
+    defaultValues: {
+      playerName: userEdit?.playerName,
+      position: {
+        value: userEdit.position as string,
+        // @ts-ignore
+        label: positionsSearch[userEdit.position] as string,
+      },
+      nativeCountry: {
+        value: userEdit.nativeCountry as string,
+        // @ts-ignore
+        label: countriesSearch[userEdit.nativeCountry] as string,
+      },
+    },
+  });
+  const [startDate, setStartDate] = useState(new Date(userEdit?.dateOfBirth));
 
   const onClear = () => {
     onCloseForm();
@@ -34,12 +50,17 @@ const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
   const onSubmit: SubmitHandler<User> = async (data) => {
     data.nativeCountry = (data.nativeCountry as NativeCountry).value;
     data.position = (data.position as Position).value;
-
-    await axios({
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
-      method: "POST",
-      data,
-    });
+    data.dateOfBirth = new Date("2021-12-02T14:34:53.075Z");
+    console.log(data);
+    try {
+      await axios({
+        url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
+        method: "PUT",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     onCloseForm();
   };
@@ -150,4 +171,4 @@ const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
     </div>
   );
 };
-export default AddUser;
+export default EditUSer;

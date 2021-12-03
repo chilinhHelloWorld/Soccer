@@ -6,13 +6,16 @@ import DetailPlayer from "./components/DetailUser";
 import Home from "./components/Home";
 import Menus from "./components/Menus";
 import "./index.css";
-
+import { User } from "./interfaces/InterfaceUser";
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Menus></Menus>
       <Routes>
-        <Route path="/detail" element={<DetailPlayer />} />
+        {
+          //@ts-ignore
+          <Route path="/detail/:id" element={<DetailPlayer />} />
+        }
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<App />} />
       </Routes>
