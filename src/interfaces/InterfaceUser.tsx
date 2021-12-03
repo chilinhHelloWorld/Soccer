@@ -1,9 +1,10 @@
 export interface User {
   id: string;
-  playerName: string | Date;
-  dateOfBirth: Date;
+  playerName: string;
+  dateOfBirth: string | Date;
   position: string | Position;
   nativeCountry: string | NativeCountry;
+  overall: number;
 }
 
 export interface NativeCountry {

@@ -1,12 +1,13 @@
 import axios from "axios";
+import { format } from "date-fns";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Select from "react-select";
 import { countries } from "../data/countries";
-import { positions } from "../data/positions";
 import { countriesSearch } from "../data/countriesSearch";
+import { positions } from "../data/positions";
 import { positionsSearch } from "../data/positionsSearch";
 import {
   NativeCountry,
@@ -23,9 +24,9 @@ interface IProps {
   seteditUser: React.Dispatch<React.SetStateAction<never[]>>;
 }
 const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
-  console.log(userEdit);
   const { register, handleSubmit, reset, control } = useForm<User>({
     defaultValues: {
+      id: userEdit.id,
       playerName: userEdit?.playerName,
       position: {
         value: userEdit.position as string,
@@ -37,8 +38,10 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
         // @ts-ignore
         label: countriesSearch[userEdit.nativeCountry] as string,
       },
+      overall: userEdit.overall,
     },
   });
+
   const [startDate, setStartDate] = useState(new Date(userEdit?.dateOfBirth));
 
   const onClear = () => {
@@ -50,8 +53,13 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
   const onSubmit: SubmitHandler<User> = async (data) => {
     data.nativeCountry = (data.nativeCountry as NativeCountry).value;
     data.position = (data.position as Position).value;
-    data.dateOfBirth = new Date("2021-12-02T14:34:53.075Z");
+
+    // parse string to num
+    data.overall = +data.overall;
+    data.dateOfBirth = format(new Date(data.dateOfBirth), "yyyy-MM-dd");
+
     console.log(data);
+
     try {
       await axios({
         url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
@@ -59,7 +67,7 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
         data,
       });
     } catch (error) {
-      console.log(error);
+      console.dir(error);
     }
 
     onCloseForm();
@@ -99,7 +107,7 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <DatePicker
-                      selected={value}
+                      selected={value as Date}
                       className="inputForm"
                       onChange={onChange}
                     />
@@ -147,7 +155,21 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
                   )}
                 />
               </div>
+
+              <h4 className="titile1">Overall</h4>
+              <div>
+                <input
+                  className="inputForm"
+                  type="number"
+                  {...register("overall", {
+                    required: true,
+                    min: 1,
+                    max: 100,
+                  })}
+                ></input>
+              </div>
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"

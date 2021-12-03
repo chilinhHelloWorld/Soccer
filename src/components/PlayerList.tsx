@@ -1,35 +1,20 @@
 import axios from "axios";
 import { format } from "date-fns";
-import da from "date-fns/esm/locale/da/index.js";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddUser from "../actions/AddUser";
 import EditUser from "../actions/EditUser";
 import SearchUser from "../actions/SearchUser";
-import { User } from "../interfaces/InterfaceUser";
 import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
+import { User } from "../interfaces/InterfaceUser";
 import Pagination from "./Pagination";
 const UserList = () => {
-  const [users, setUser] = useState<User[]>([
-    {
-      id: "1",
-      playerName: "Linh",
-      dateOfBirth: new Date(),
-      position: "Soc Trang",
-      nativeCountry: "AAA",
-    },
-  ]);
+  const [users, setUser] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPage, setItemPage] = useState(5);
   const [editUser, seteditUser] = useState([]);
-  const [userDataEditing, setUserDataEditing] = useState<User>({
-    id: "1",
-    playerName: "Name",
-    dateOfBirth: new Date(),
-    position: "Position",
-    nativeCountry: "Country",
-  });
+  const [userDataEditing, setUserDataEditing] = useState<User>({} as User);
   const [showForm, setShowForm] = useState(false);
   const [isShowFormEdit, setIsShowFormEdit] = useState(false);
   let navigate = useNavigate();
@@ -69,31 +54,7 @@ const UserList = () => {
         console.log(err);
       });
   };
-  /* const onDelete = (id: string) => {
-    axios({
-      method: "DELETE",
-      url: "http://localhost:5000/delete_user",
-      data: { id },
-    })
-      .then((res) => {
-        axios({
-          headers: {
-            "x-access-token": "" + localStorage.getItem("accessToken"),
-          },
-          method: "GET",
-          url: "http://localhost:5000/users",
-        })
-          .then((res) => {
-            setUser(res.data.result);
-          })
-          .catch((err) => {
-            console.log(`load users fail ${err}`);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }; */
+
   const onEdit = (user: User) => {
     setUserDataEditing(user);
     setIsShowFormEdit(true);
@@ -183,10 +144,7 @@ const UserList = () => {
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr
-                  style={{ cursor: "pointer", zIndex: -1 }}
-                  onClick={() => handleClick(user)}
-                >
+                <tr style={{ cursor: "pointer", zIndex: -1 }}>
                   <td>{index + 1}</td>
                   <td>{user.playerName}</td>
                   <td>{format(new Date(user.dateOfBirth), "dd-MM-yyyy")}</td>
@@ -219,6 +177,12 @@ const UserList = () => {
                     >
                       Edit
                     </button>
+                    <Link
+                      style={{ marginLeft: "10px" }}
+                      to={`/detail/` + user.id}
+                    >
+                      Detail
+                    </Link>
                   </td>
                 </tr>
               ))}

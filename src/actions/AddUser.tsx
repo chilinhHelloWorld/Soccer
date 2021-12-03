@@ -78,7 +78,7 @@ const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <DatePicker
-                      selected={value}
+                      selected={value as Date}
                       className="inputForm"
                       onChange={onChange}
                     />

@@ -1,29 +1,30 @@
-import football from "../image/football.jpg";
-import icon from "../image/football.png";
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import { User } from "../interfaces/InterfaceUser";
-import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
+import football from "../image/football.jpg";
+import icon from "../image/football.png";
+import { User } from "../interfaces/InterfaceUser";
 interface props {}
 
 const DetailPlayer: React.FC<props> = () => {
   let { id } = useParams();
   const [userData, getUserData] = useState<User>();
+
   const getUser = async () => {
-    const user = await axios({
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/${id}`,
+    const { data } = await axios({
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/7FDA8BF3-9E80-42AA-AFF6-3A98AF3862F4`,
       method: "GET",
     });
 
-    return user;
+    getUserData(data);
   };
   useEffect(() => {
-    const user = getUser();
-    user.then((response) => getUserData(response.data));
+    getUser();
   }, []);
+
   return (
     <div className="wrapper">
       {userData ? (
