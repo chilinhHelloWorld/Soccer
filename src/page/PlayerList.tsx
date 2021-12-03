@@ -1,16 +1,14 @@
 import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import { Link, useNavigate } from "react-router-dom";
 import AddUser from "../actions/AddUser";
 import EditUser from "../actions/EditUser";
-import SearchUser from "../actions/SearchUser";
 import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
-import { Player } from "../interfaces/InterfaceUser";
-import Pagination from "../components/Pagination";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
+import { Player } from "../interfaces/Player";
 
 const UserList = () => {
   const [users, setUser] = useState<Player[]>([]);

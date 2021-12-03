@@ -11,10 +11,10 @@ import { positions } from "../data/positions";
 import { positionsSearch } from "../data/positionsSearch";
 import {
   NativeCountry,
-  Position,
   Player as EditUser,
   Player,
-} from "../interfaces/InterfaceUser";
+  Position,
+} from "../interfaces/Player";
 
 interface IProps {
   user: EditUser[];

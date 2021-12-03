@@ -6,7 +6,7 @@ import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
 import football from "../image/football.jpg";
 import icon from "../image/football.png";
-import { Player } from "../interfaces/InterfaceUser";
+import { Player } from "../interfaces/Player";
 interface props {}
 
 const DetailPlayer: React.FC<props> = () => {

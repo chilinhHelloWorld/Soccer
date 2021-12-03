@@ -8,10 +8,10 @@ import { countries } from "../data/countries";
 import { positions } from "../data/positions";
 import {
   NativeCountry,
-  Position,
   Player as Adduser,
   Player,
-} from "../interfaces/InterfaceUser";
+  Position,
+} from "../interfaces/Player";
 
 interface IProps {
   user: Adduser[];
