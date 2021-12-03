@@ -9,8 +9,8 @@ import { positions } from "../data/positions";
 import {
   NativeCountry,
   Position,
-  User as Adduser,
-  User,
+  Player as Adduser,
+  Player,
 } from "../interfaces/InterfaceUser";
 
 interface IProps {
@@ -19,9 +19,11 @@ interface IProps {
   userEdit?: Adduser[];
   onCloseForm: () => void;
   seteditUser: React.Dispatch<React.SetStateAction<never[]>>;
+  reload: boolean;
+  setReload: (reload: boolean) => void;
 }
-const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
-  const { register, handleSubmit, reset, control } = useForm<User>();
+const AddUser = ({ seteditUser, onCloseForm, reload, setReload }: IProps) => {
+  const { register, handleSubmit, reset, control } = useForm<Player>();
 
   const [startDate, setStartDate] = useState(new Date());
 
@@ -31,16 +33,16 @@ const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
     seteditUser([]);
   };
 
-  const onSubmit: SubmitHandler<User> = async (data) => {
+  const onSubmit: SubmitHandler<Player> = async (data) => {
     data.nativeCountry = (data.nativeCountry as NativeCountry).value;
     data.position = (data.position as Position).value;
-
     await axios({
       url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
       method: "POST",
       data,
     });
-
+    console.log(data);
+    setReload(!reload);
     onCloseForm();
   };
 
@@ -125,6 +127,18 @@ const AddUser = ({ seteditUser, onCloseForm }: IProps) => {
                     />
                   )}
                 />
+              </div>
+              <h4 className="titile1">Overall</h4>
+              <div>
+                <input
+                  className="inputForm"
+                  type="number"
+                  {...register("overall", {
+                    required: true,
+                    min: 1,
+                    max: 100,
+                  })}
+                ></input>
               </div>
             </div>
             <div className="modal-footer">

@@ -1,6 +1,6 @@
 import React from "react";
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
-import App from './App'; 
+import NotFoundPage from "./components/NotFoundPage";
+import App from "./App";
 //----------------------------------------------------------------------------------
 /**
  * /**
@@ -8,13 +8,13 @@ import App from './App';
  * Routes
  */
 const routes = [
-    {
-        path: '/home',
-        element: <App />
-    },   
-    {
-        path: '/',
-        element:<NotFoundPage />
-    }
-]
+  {
+    path: "/home",
+    element: <App />,
+  },
+  {
+    path: "/",
+    element: <NotFoundPage />,
+  },
+];
 export default routes;

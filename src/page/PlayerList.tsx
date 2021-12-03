@@ -7,25 +7,29 @@ import EditUser from "../actions/EditUser";
 import SearchUser from "../actions/SearchUser";
 import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
-import { User } from "../interfaces/InterfaceUser";
-import Pagination from "./Pagination";
+import { Player } from "../interfaces/InterfaceUser";
+import Pagination from "../components/Pagination";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
 const UserList = () => {
-  const [users, setUser] = useState<User[]>([]);
+  const [users, setUser] = useState<Player[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPage, setItemPage] = useState(5);
   const [editUser, seteditUser] = useState([]);
-  const [userDataEditing, setUserDataEditing] = useState<User>({} as User);
+  const [userDataEditing, setUserDataEditing] = useState<Player>({} as Player);
   const [showForm, setShowForm] = useState(false);
+  const [reload, setReload] = useState(false);
   const [isShowFormEdit, setIsShowFormEdit] = useState(false);
   let navigate = useNavigate();
 
-  function handleClick(user: User) {
+  function handleClick(user: Player) {
     navigate(`/detail/` + user.id);
   }
 
   useEffect(() => {
     fetchPlayers();
-  }, []);
+  }, [reload]);
   const fetchPlayers = async () => {
     const { data } = await axios({
       method: "GET",
@@ -41,21 +45,36 @@ const UserList = () => {
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  const submit = (user: Player) => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => onDelete(user.id),
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
   const onDelete = (id: string) => {
     axios({
       method: "DELETE",
       url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/${id}`,
     })
       .then((res) => {
-        console.log(res);
-        fetchPlayers();
+        setReload(!reload);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const onEdit = (user: User) => {
+  const onEdit = (user: Player) => {
     setUserDataEditing(user);
     setIsShowFormEdit(true);
   };
@@ -85,6 +104,8 @@ const UserList = () => {
         setUser={setUser}
         //userEdit={editUser}
         seteditUser={seteditUser}
+        reload={reload}
+        setReload={setReload}
       ></AddUser>
     ) : (
       ""
@@ -98,6 +119,8 @@ const UserList = () => {
         setUser={setUser}
         userEdit={userDataEditing}
         seteditUser={seteditUser}
+        reload={reload}
+        setReload={setReload}
       />
     ) : (
       ""
@@ -118,7 +141,7 @@ const UserList = () => {
         <button className="btn btn-primary btnAdd" onClick={() => onShowForm()}>
           Add New User
         </button>
-        <SearchUser onSearch={onSearch}></SearchUser>
+        {/* <SearchUser onSearch={onSearch}></SearchUser> */}
       </div>
       <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
         {showFormSave()}
@@ -145,17 +168,19 @@ const UserList = () => {
             <tbody>
               {users.map((user, index) => (
                 <tr style={{ cursor: "pointer", zIndex: -1 }}>
-                  <td>{index + 1}</td>
-                  <td>{user.playerName}</td>
-                  <td>{format(new Date(user.dateOfBirth), "dd-MM-yyyy")}</td>
+                  <td onClick={() => handleClick(user)}>{index + 1}</td>
+                  <td onClick={() => handleClick(user)}>{user.playerName}</td>
+                  <td onClick={() => handleClick(user)}>
+                    {format(new Date(user.dateOfBirth), "dd-MM-yyyy")}
+                  </td>
 
-                  <td>
+                  <td onClick={() => handleClick(user)}>
                     {
                       //@ts-ignore
                       positionsSearch[user.position]
                     }
                   </td>
-                  <td>
+                  <td onClick={() => handleClick(user)}>
                     {
                       //@ts-ignore
                       countriesSearch[user.nativeCountry]
@@ -165,7 +190,7 @@ const UserList = () => {
                     <button
                       type="button"
                       className="btn btn-danger btnUpdate"
-                      onClick={() => onDelete(user.id)}
+                      onClick={() => submit(user)}
                     >
                       Delete
                     </button>
@@ -188,11 +213,11 @@ const UserList = () => {
               ))}
             </tbody>
           </table>
-          <Pagination
+          {/*  <Pagination
             itemPage={itemPage}
             totalPage={users.length}
             paginate={paginate}
-          />
+          /> */}
         </div>
       </div>
     </div>

@@ -6,20 +6,18 @@ import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
 import football from "../image/football.jpg";
 import icon from "../image/football.png";
-import { User } from "../interfaces/InterfaceUser";
+import { Player } from "../interfaces/InterfaceUser";
 interface props {}
 
 const DetailPlayer: React.FC<props> = () => {
   let { id } = useParams();
-  const [userData, getUserData] = useState<User>();
-
+  const [userData, getUserData] = useState<Player>();
   const getUser = async () => {
     const { data } = await axios({
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/7FDA8BF3-9E80-42AA-AFF6-3A98AF3862F4`,
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/${id}`,
       method: "GET",
     });
-
-    getUserData(data);
+    if (data) getUserData(data);
   };
   useEffect(() => {
     getUser();

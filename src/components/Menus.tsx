@@ -8,18 +8,18 @@ const Menus = () => {
           <li className="active">
             <Link to="/">Players</Link>
           </li>
-          <li className="active">
+          {/* <li className="active">
             <Link to="/home">Home</Link>
-          </li>
+          </li> */}
         </ul>
-        <div>
+        {/* <div>
           <Link
             to={"/"}
             className="btn btn-large btn-block btn-danger btnLogout"
           >
             Logout
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

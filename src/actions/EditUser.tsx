@@ -12,8 +12,8 @@ import { positionsSearch } from "../data/positionsSearch";
 import {
   NativeCountry,
   Position,
-  User as EditUser,
-  User,
+  Player as EditUser,
+  Player,
 } from "../interfaces/InterfaceUser";
 
 interface IProps {
@@ -22,9 +22,18 @@ interface IProps {
   userEdit: EditUser;
   onCloseForm: () => void;
   seteditUser: React.Dispatch<React.SetStateAction<never[]>>;
+  reload: boolean;
+  setReload: (reload: boolean) => void;
 }
-const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
-  const { register, handleSubmit, reset, control } = useForm<User>({
+const EditUSer = ({
+  seteditUser,
+  onCloseForm,
+  userEdit,
+  reload,
+  setReload,
+}: IProps) => {
+  console.log(userEdit);
+  const { register, handleSubmit, reset, control } = useForm<Player>({
     defaultValues: {
       id: userEdit.id,
       playerName: userEdit?.playerName,
@@ -50,7 +59,7 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
     seteditUser([]);
   };
 
-  const onSubmit: SubmitHandler<User> = async (data) => {
+  const onSubmit: SubmitHandler<Player> = async (data) => {
     data.nativeCountry = (data.nativeCountry as NativeCountry).value;
     data.position = (data.position as Position).value;
 
@@ -69,7 +78,7 @@ const EditUSer = ({ seteditUser, onCloseForm, userEdit }: IProps) => {
     } catch (error) {
       console.dir(error);
     }
-
+    setReload(!reload);
     onCloseForm();
   };
 
