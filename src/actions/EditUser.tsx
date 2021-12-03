@@ -71,7 +71,7 @@ const EditUSer = ({
 
     try {
       await axios({
-        url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
+        url: `https://localhost:${process.env.REACT_APP_API_PORT}/Player`,
         method: "PUT",
         data,
       });

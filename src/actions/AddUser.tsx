@@ -37,7 +37,7 @@ const AddUser = ({ seteditUser, onCloseForm, reload, setReload }: IProps) => {
     data.nativeCountry = (data.nativeCountry as NativeCountry).value;
     data.position = (data.position as Position).value;
     await axios({
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/Player`,
       method: "POST",
       data,
     });

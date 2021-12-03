@@ -14,13 +14,22 @@ code {
 
 .navbar {
   box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
+  margin-bottom: 0;
+}
+
+.pt-4 {
+  padding-top: 20px;
 }
 /* DETAIL */
-
+.btn-back {
+  position: absolute;
+  top: 100px;
+  left: 30px;
+}
 .wrapper {
   height: calc(100vh - 52px);
   width: 100%;
-  background-color: #f8fffc;
+  background-color: #f8fbff;
   display: flex;
   justify-content: center;
   align-items: center;

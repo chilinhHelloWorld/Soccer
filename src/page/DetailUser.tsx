@@ -1,7 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { countriesSearch } from "../data/countriesSearch";
 import { positionsSearch } from "../data/positionsSearch";
 import football from "../image/football.jpg";
@@ -10,33 +10,38 @@ import { Player } from "../interfaces/Player";
 interface props {}
 
 const DetailPlayer: React.FC<props> = () => {
+  const [player, setPlayer] = useState<Player>();
   let { id } = useParams();
-  const [userData, getUserData] = useState<Player>();
-  const getUser = async () => {
-    const { data } = await axios({
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/${id}`,
-      method: "GET",
-    });
-    if (data) getUserData(data);
-  };
+
   useEffect(() => {
     getUser();
   }, []);
 
+  const getUser = async () => {
+    const { data } = await axios({
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/Player/${id}`,
+      method: "GET",
+    });
+    if (data) setPlayer(data);
+  };
+
   return (
     <div className="wrapper">
-      {userData ? (
+      <Link to="/" className="btn-link btn-back">
+        Back
+      </Link>
+      {player ? (
         <div className="player">
           <div className="player-info">
             <h3>Player Information</h3>
             <ul>
               <li>
-                Name: <strong className="gray">{userData.playerName}</strong>
+                Name: <strong className="gray">{player.playerName}</strong>
               </li>
               <li>
                 DoB:{" "}
                 <strong className="gray">
-                  {format(new Date(userData.dateOfBirth), "dd-MM-yyyy")}
+                  {format(new Date(player.dateOfBirth), "dd-MM-yyyy")}
                 </strong>
               </li>
               <li>
@@ -44,9 +49,9 @@ const DetailPlayer: React.FC<props> = () => {
                 <strong className="gray">
                   {
                     //@ts-ignorets
-                    countriesSearch[userData.nativeCountry] //@ts-ignore
-                      ? countriesSearch[userData.nativeCountry]
-                      : userData.nativeCountry
+                    countriesSearch[player.nativeCountry] //@ts-ignore
+                      ? countriesSearch[player.nativeCountry]
+                      : player.nativeCountry
                   }
                 </strong>
               </li>
@@ -55,12 +60,15 @@ const DetailPlayer: React.FC<props> = () => {
                 <strong className="gray">
                   {
                     //@ts-ignore
-                    positionsSearch[userData.position]
+                    positionsSearch[player.position]
                       ? //@ts-ignore
-                        positionsSearch[userData.position]
-                      : userData.position
+                        positionsSearch[player.position]
+                      : player.position
                   }
                 </strong>
+              </li>
+              <li>
+                Position: <strong className="gray">{player.overall}</strong>
               </li>
             </ul>
             <img src={icon} alt="" />

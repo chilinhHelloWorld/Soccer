@@ -1,9 +1,10 @@
+import { Pagination } from "@mui/material";
 import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AddUser from "../actions/AddUser";
 import EditUser from "../actions/EditUser";
 import { countriesSearch } from "../data/countriesSearch";
@@ -12,14 +13,21 @@ import { Player } from "../interfaces/Player";
 
 const UserList = () => {
   const [users, setUser] = useState<Player[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPage, setItemPage] = useState(5);
   const [editUser, seteditUser] = useState([]);
   const [userDataEditing, setUserDataEditing] = useState<Player>({} as Player);
   const [showForm, setShowForm] = useState(false);
   const [reload, setReload] = useState(false);
   const [isShowFormEdit, setIsShowFormEdit] = useState(false);
+  const [totalPlayers, setTotalPlayers] = useState(0);
   let navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(() => {
+    return searchParams.has("page")
+      ? parseInt(searchParams.get("page") as string)
+      : 1;
+  });
+
+  const LIMIT = 8;
 
   function handleClick(user: Player) {
     navigate(`/detail/` + user.id);
@@ -27,22 +35,18 @@ const UserList = () => {
 
   useEffect(() => {
     fetchPlayers();
-  }, [reload]);
+  }, [reload, page]);
+
   const fetchPlayers = async () => {
     const { data } = await axios({
       method: "GET",
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player`,
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/Player/GetPaging?page=${page}&size=${LIMIT}`,
     });
 
-    setUser(data);
+    setTotalPlayers(data.total);
+    setUser(data.players);
   };
 
-  const indexOfLast = currentPage * itemPage;
-  const indexOfFirst = indexOfLast - itemPage;
-  const currentPost = users.slice(indexOfFirst, indexOfLast);
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
   const submit = (user: Player) => {
     confirmAlert({
       title: "Confirm to delete",
@@ -62,7 +66,7 @@ const UserList = () => {
   const onDelete = (id: string) => {
     axios({
       method: "DELETE",
-      url: `https://localhost:${process.env.REACT_APP_API_PORT}/api/Player/${id}`,
+      url: `https://localhost:${process.env.REACT_APP_API_PORT}/Player/${id}`,
     })
       .then((res) => {
         setReload(!reload);
@@ -77,23 +81,6 @@ const UserList = () => {
     setIsShowFormEdit(true);
   };
 
-  const onSearch = (keyword: string) => {
-    console.log(keyword);
-    axios({
-      headers: {
-        "x-access-token": "" + localStorage.getItem("accessToken"),
-      },
-      method: "GET",
-      url: "http://localhost:5000/search?keyword=" + keyword,
-      data: null,
-    })
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const showFormSave = () => {
     return showForm ? (
       <AddUser
@@ -132,14 +119,18 @@ const UserList = () => {
   const onShowForm = () => {
     setShowForm(true);
   };
+  console.log(page);
+
+  const onChange = (_: any, page: number) => {
+    setPage(page);
+  };
 
   return (
-    <div className="container">
+    <div className="container pt-4">
       <div>
         <button className="btn btn-primary btnAdd" onClick={() => onShowForm()}>
           Add New User
         </button>
-        {/* <SearchUser onSearch={onSearch}></SearchUser> */}
       </div>
       <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
         {showFormSave()}
@@ -166,7 +157,9 @@ const UserList = () => {
             <tbody>
               {users.map((user, index) => (
                 <tr style={{ cursor: "pointer", zIndex: -1 }}>
-                  <td onClick={() => handleClick(user)}>{index + 1}</td>
+                  <td onClick={() => handleClick(user)}>
+                    {(page - 1) * LIMIT + index + 1}
+                  </td>
                   <td onClick={() => handleClick(user)}>{user.playerName}</td>
                   <td onClick={() => handleClick(user)}>
                     {format(new Date(user.dateOfBirth), "dd-MM-yyyy")}
@@ -194,28 +187,23 @@ const UserList = () => {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger btnUpdate"
+                      className="btn btn-secondary btnUpdate"
                       onClick={() => onEdit(user)}
                       style={{ zIndex: 500 }}
                     >
                       Edit
                     </button>
-                    <Link
-                      style={{ marginLeft: "10px" }}
-                      to={`/detail/` + user.id}
-                    >
-                      Detail
-                    </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {/*  <Pagination
-            itemPage={itemPage}
-            totalPage={users.length}
-            paginate={paginate}
-          /> */}
+
+          <Pagination
+            count={Math.ceil(totalPlayers / LIMIT)}
+            color="primary"
+            onChange={onChange}
+          />
         </div>
       </div>
     </div>
