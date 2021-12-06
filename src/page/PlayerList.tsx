@@ -13,6 +13,7 @@ import { Player } from "../interfaces/Player";
 
 const UserList = () => {
   const [users, setUser] = useState<Player[]>([]);
+
   const [editUser, seteditUser] = useState([]);
   const [userDataEditing, setUserDataEditing] = useState<Player>({} as Player);
   const [showForm, setShowForm] = useState(false);

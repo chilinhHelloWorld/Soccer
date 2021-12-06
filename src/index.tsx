@@ -5,6 +5,7 @@ import App from "./App";
 import Menus from "./components/Menus";
 import "./index.css";
 import DetailPlayer from "./page/DetailUser";
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>

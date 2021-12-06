@@ -68,7 +68,7 @@ const DetailPlayer: React.FC<props> = () => {
                 </strong>
               </li>
               <li>
-                Position: <strong className="gray">{player.overall}</strong>
+                Overall: <strong className="gray">{player.overall}</strong>
               </li>
             </ul>
             <img src={icon} alt="" />

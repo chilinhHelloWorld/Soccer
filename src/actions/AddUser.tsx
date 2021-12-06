@@ -23,7 +23,13 @@ interface IProps {
   setReload: (reload: boolean) => void;
 }
 const AddUser = ({ seteditUser, onCloseForm, reload, setReload }: IProps) => {
-  const { register, handleSubmit, reset, control } = useForm<Player>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<Player>();
 
   const [startDate, setStartDate] = useState(new Date());
 
@@ -68,8 +74,9 @@ const AddUser = ({ seteditUser, onCloseForm, reload, setReload }: IProps) => {
               <div>
                 <input
                   className="inputForm"
-                  {...register("playerName", { required: true })}
+                  {...register("playerName", { required: true, maxLength: 64 })}
                 ></input>
+                {errors.playerName?.type === "maxLength" && "Error here"}
               </div>
               <h4 className="titile1">Date of Birth</h4>
               <div>
